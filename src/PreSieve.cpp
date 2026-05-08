@@ -104,10 +104,16 @@
 namespace {
 
 /// Runtime dispatch to optimized presieve1() SIMD algorithm
+/// When compiling with -march=native or specific AVX512 flags,
+/// the compile-time path is used (no runtime dispatch needed).
 template <typename... Args>
 void presieve1(Args&&... args)
 {
-#if defined(ENABLE_MULTIARCH_AVX512_BW)
+#if defined(__AVX512F__) && defined(__AVX512BW__)
+  presieve1_x86_avx512(std::forward<Args>(args)...);
+#elif defined(__AVX2__)
+  presieve1_x86_avx2(std::forward<Args>(args)...);
+#elif defined(ENABLE_MULTIARCH_AVX512_BW)
   if (cpu_supports_avx512_bw)
     presieve1_x86_avx512(std::forward<Args>(args)...);
   else
@@ -128,10 +134,16 @@ void presieve1(Args&&... args)
 }
 
 /// Runtime dispatch to optimized presieve2() SIMD algorithm
+/// When compiling with -march=native or specific AVX512 flags,
+/// the compile-time path is used (no runtime dispatch needed).
 template <typename... Args>
 void presieve2(Args&&... args)
 {
-#if defined(ENABLE_MULTIARCH_AVX512_BW)
+#if defined(__AVX512F__) && defined(__AVX512BW__)
+  presieve2_x86_avx512(std::forward<Args>(args)...);
+#elif defined(__AVX2__)
+  presieve2_x86_avx2(std::forward<Args>(args)...);
+#elif defined(ENABLE_MULTIARCH_AVX512_BW)
   if (cpu_supports_avx512_bw)
     presieve2_x86_avx512(std::forward<Args>(args)...);
   else

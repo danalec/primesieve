@@ -1,5 +1,4 @@
 {
-  "$schema": "https://raw.githubusercontent.com/Kitware/CMake/master/Help/schema/cmake-presets-schema.json",
   "version": 6,
   "cmakeMinimumRequired": {
     "major": 3,
@@ -142,6 +141,42 @@
       }
     },
     {
+      "name": "clang-native-debug",
+      "displayName": "Clang Native Debug",
+      "description": "Debug build with -march=native enabling all CPU instructions (AVX512 on supported CPUs)",
+      "inherits": "debug",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_FLAGS_DEBUG": "-march=native -Wall -Wextra -Wpedantic -g",
+        "CMAKE_CXX_FLAGS_DEBUG": "-march=native -Wall -Wextra -Wpedantic -g"
+      }
+    },
+    {
+      "name": "clang-native-release",
+      "displayName": "Clang Native Release",
+      "description": "Release build with -march=native enabling all CPU instructions (AVX512 VBMI2 on supported CPUs)",
+      "inherits": "release",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_FLAGS_RELEASE": "-march=native -Wall -Wextra -Wpedantic -O3 -flto",
+        "CMAKE_CXX_FLAGS_RELEASE": "-march=native -Wall -Wextra -Wpedantic -O3 -flto"
+      }
+    },
+    {
+      "name": "clang-native-relwithdebinfo",
+      "displayName": "Clang Native RelWithDebInfo",
+      "description": "Release build with debug info and -march=native for all CPU instructions",
+      "inherits": "relwithdebinfo",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_FLAGS_RELWITHDEBINFO": "-march=native -Wall -Wextra -Wpedantic -O2 -g",
+        "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "-march=native -Wall -Wextra -Wpedantic -O2 -g"
+      }
+    },
+    {
       "name": "emscripten",
       "displayName": "Emscripten (WebAssembly)",
       "description": "Build for WebAssembly using Emscripten",
@@ -192,6 +227,18 @@
     {
       "name": "install",
       "configurePreset": "install"
+    },
+    {
+      "name": "clang-native-debug",
+      "configurePreset": "clang-native-debug"
+    },
+    {
+      "name": "clang-native-release",
+      "configurePreset": "clang-native-release"
+    },
+    {
+      "name": "clang-native-relwithdebinfo",
+      "configurePreset": "clang-native-relwithdebinfo"
     }
   ],
   "testPresets": [
